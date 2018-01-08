@@ -66,7 +66,7 @@ char *check(char *str,int fd)
 	for (strle; str[strle]; strle = strle + 1);
 	for (i; str[i]; i = i + 1) {
 		if (str[i] == '\n' || str[i] == '\0')
-		break;
+			break;
 	}
 	if (i != strle)
 		return (str);
