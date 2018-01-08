@@ -88,8 +88,8 @@ char *get_next_line(int fd)
 	int strl = 0;
 	int morel = 0;
 
-	if (fd < 0 || READ_SIZE < 1)
-		return ('\0');
+	if (fd < 0 || READ_SIZE == 0)
+		return (NULL);
 	if (more)
 		begin = my_strcpy(begin, more);
 	read(fd, str, READ_SIZE);
@@ -97,11 +97,9 @@ char *get_next_line(int fd)
 	str = my_strcpy(str, begin);
 	str = my_strconcat(str, more);
 	for (strl; str[strl]; strl = strl + 1);
-	while (more[0] != '\n')
-		more ++;
+	for (more; more[0] != '\n'; more ++);
 	more ++;
-	while (more[morel])
-		morel = morel + 1;
+	for (morel; more[morel]; morel = morel + 1);
 	str[strl - (morel + 1)] = '\0';
 	return (str);
 }
