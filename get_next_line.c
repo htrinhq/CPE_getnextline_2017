@@ -88,11 +88,10 @@ char *get_next_line(int fd)
 	int strl = 0;
 	int morel = 0;
 
-	if (fd < 0 || READ_SIZE == 0)
-		return (NULL);
 	if (more)
 		begin = my_strcpy(begin, more);
-	read(fd, str, READ_SIZE);
+	if (read(fd, str, READ_SIZE) == 0 || fd < 0 || READ_SIZE == 0)
+		return (NULL);
 	more = check(str, fd);
 	str = my_strcpy(str, begin);
 	str = my_strconcat(str, more);
