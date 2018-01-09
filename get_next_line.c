@@ -65,19 +65,19 @@ char *check(char *str,int fd)
 
 	for (strle; str[strle]; strle = strle + 1);
 	for (i; str[i]; i = i + 1) {
-		if (str[i] == '\n' || str[i] == '\0')
+		if (str[i] == '\n')
 			break;
 	}
 	if (i != strle)
 		return (str);
-	else {
-		str = realoc(str, strle);
-		read(fd, inter, READ_SIZE);
-		dest = malloc(sizeof(char) * (strle + READ_SIZE + 1));
-		dest = my_strconcat(str, inter);
-		dest = check(dest, fd);
-		return (dest);
-	}
+	i = read(fd, inter, READ_SIZE);
+	str = realoc(str, strle);
+	if (i == 0)
+		return (NULL);
+	dest = malloc(sizeof(char) * (strle + READ_SIZE + 1));
+	dest = my_strconcat(str, inter);
+	dest = check(dest, fd);
+	return (dest);
 }
 
 char *get_next_line(int fd)
@@ -90,10 +90,11 @@ char *get_next_line(int fd)
 
 	if (more)
 		begin = my_strcpy(begin, more);
-	if (read(fd, str, READ_SIZE) == 0 || fd < 0 || READ_SIZE == 0)
-		return (NULL);
 	more = check(str, fd);
-	str = my_strcpy(str, begin);
+	if (more == NULL || fd < 0 || READ_SIZE == 0)
+		return (NULL);
+	if (begin)
+		str = my_strcpy(str, begin);
 	str = my_strconcat(str, more);
 	for (strl; str[strl]; strl = strl + 1);
 	for (more; more[0] != '\n'; more ++);
