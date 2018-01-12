@@ -71,7 +71,7 @@ char *check(char *str,int fd)
 		return (str);
 	i = read(fd, inter, READ_SIZE);
 	str = realoc(str, strle);
-	if (i == 0)
+	if (i == 0 || fd < 0 || READ_SIZE == 0)
 		return (NULL);
 	dest = malloc(sizeof(char) * (strle + READ_SIZE + 1));
 	dest = my_strconcat(str, inter);
