@@ -86,13 +86,28 @@ char *get_next_line(int fd)
 	static char *more;
 	int strl = 0;
 	int morel = 0;
+	int x = 0;
+	int y = 0;
 
-	if (READ_SIZE <= 0 || fd < 0)
+	if (READ_SIZE <= 0 || fd < 0 || malloc(sizeof(char) * READ_SIZE + 1) == NULL)
 		return (NULL);
 	str = malloc(sizeof(char) * READ_SIZE + 1);
 	begin = malloc(sizeof(char) * READ_SIZE + 1);
-	if (more)
-		begin = my_strcpy(begin, more);
+	if (more) {
+		for (morel; more[morel]; morel = morel + 1);
+		for (x; more[x]; x = x + 1)
+			if (more[x] == '\n')
+				break;
+		if (x < morel) {
+			for (y; y < x; y = y + 1) {
+				begin[y] = more[0];
+				more ++;
+			}
+			more ++;
+			return (begin);
+		} else
+			begin = my_strcpy(begin, more);
+	}
 	more = check(str, fd);
 	if (more == NULL)
 		return (NULL);
