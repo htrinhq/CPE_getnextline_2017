@@ -6,7 +6,7 @@
 */
 
 #ifndef READ_SIZE
-#define READ_SIZE (128)
+#define READ_SIZE (12)
 #endif
 
 #ifndef GET_LINE

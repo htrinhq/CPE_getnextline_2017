@@ -11,7 +11,7 @@ char *my_strcpy(char *dest, char *src)
 {
 	int x = 0;
 
-	while (src[x] != '\0') {
+	while (src[x]) {
 		dest[x] = src[x];
 		x = x + 1;
 	}
@@ -32,7 +32,7 @@ char *my_strconcat(char *str1, char *str2)
 		strl2 = strl2 + 1;
 	dest = malloc(sizeof(char) * (strl1 + strl2));
 	my_strcpy(dest, str1);
-	while (str2[x] != '\0') {
+	while (str2[x]) {
 		dest[strl1] = str2[x];
 		strl1 = strl1 + 1;
 		x = x + 1;
@@ -64,10 +64,9 @@ char *check(char *str,int fd)
 	char *dest;
 
 	for (strle; str[strle]; strle = strle + 1);
-	for (i; str[i]; i = i + 1) {
+	for (i; str[i]; i = i + 1)
 		if (str[i] == '\n')
 			break;
-	}
 	if (i != strle)
 		return (str);
 	i = read(fd, inter, READ_SIZE);
@@ -82,16 +81,20 @@ char *check(char *str,int fd)
 
 char *get_next_line(int fd)
 {
-	char *str = malloc(sizeof(char) * READ_SIZE + 1);
-	char *begin = malloc(sizeof(char) * READ_SIZE);
+	char *str;
+	char *begin;
 	static char *more;
 	int strl = 0;
 	int morel = 0;
 
+	if (READ_SIZE <= 0 || fd < 0)
+		return (NULL);
+	str = malloc(sizeof(char) * READ_SIZE + 1);
+	begin = malloc(sizeof(char) * READ_SIZE + 1);
 	if (more)
 		begin = my_strcpy(begin, more);
 	more = check(str, fd);
-	if (more == NULL || fd < 0 || READ_SIZE == 0)
+	if (more == NULL)
 		return (NULL);
 	if (begin)
 		str = my_strcpy(str, begin);
