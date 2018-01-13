@@ -38,7 +38,7 @@ char *my_strconcat(char *str1, char *str2)
 	return (dest);
 }
 
-char *realoc(char *str, int strle)
+/*char *realoc(char *str, int strle)
 {
 	int x = 0;
 	char *s;
@@ -49,14 +49,14 @@ char *realoc(char *str, int strle)
 	s[x] = '\0';
 	free(str);
 	return (s);
-}
+}*/
 
 char *check(char *str,int fd)
 {
 	int i = 0;
 	int strle = 0;
 	char *inter = malloc(sizeof(char) * (READ_SIZE + 1));
-	char *dest;
+	//char *dest;
 
 	for (strle; str[strle]; strle = strle + 1);
 	for (i; str[i]; i = i + 1)
@@ -66,13 +66,15 @@ char *check(char *str,int fd)
 		return (str);
 	i = read(fd, inter, READ_SIZE);
 	inter[i] = '\0';
-	str = realoc(str, strle);
+	//str = realoc(str, strle);
+	str = my_strconcat(str, inter);
 	if (i == 0 || fd < 0 || READ_SIZE == 0)
 		return (NULL);
-	dest = malloc(sizeof(char) * (strle + READ_SIZE + 1));
+	/*dest = malloc(sizeof(char) * (strle + READ_SIZE + 1));
 	dest = my_strconcat(str, inter);
-	dest = check(dest, fd);
-	return (dest);
+	dest = check(dest, fd);*/
+	str = check(str, fd);
+	return (str);
 }
 
 char *get_next_line(int fd)
@@ -115,7 +117,8 @@ char *get_next_line(int fd)
 	if (begin) {
 		str = my_strcpy(str, begin);
 	}
-	str = my_strconcat(str, more);
+	if (more)
+		str = my_strconcat(str, more);
 	for (strl; str[strl]; strl = strl + 1);
 	for (more; more[0] != '\n'; more ++);
 	more ++;
