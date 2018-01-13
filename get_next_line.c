@@ -59,6 +59,31 @@ char *check(char *str,int fd)
 	return (str);
 }
 
+char *more_exists(char *more, char *begin)
+{
+	int x = 0;
+	int y = 0;
+	int morel = 0;
+
+	for (morel; more[morel]; morel = morel + 1);
+	for (x; more[x]; x = x + 1)
+		if (more[x] == '\n')
+			break;
+	if (x < morel) {
+		for (y; y < x; y = y + 1) {
+			begin[y] = more[0];
+			more ++;
+		}
+		more ++;
+		begin[y] = '\0';
+		return (begin);
+	} else {
+		begin = my_strcpy(begin, more);
+		begin[morel] = '\0';
+		return (begin);
+	}
+}
+
 char *get_next_line(int fd)
 {
 	char *str;
@@ -92,13 +117,13 @@ char *get_next_line(int fd)
 			begin = my_strcpy(begin, more);
 			begin[morel] = '\0';
 		}
+		//more_exists(more, begin);
 	}
 	more = check(str, fd);
 	if (more == NULL)
 		return (NULL);
-	if (begin) {
+	if (begin)
 		str = my_strcpy(str, begin);
-	}
 	if (more)
 		str = my_strconcat(str, more);
 	for (strl; str[strl]; strl = strl + 1);
