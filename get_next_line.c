@@ -38,25 +38,11 @@ char *my_strconcat(char *str1, char *str2)
 	return (dest);
 }
 
-/*char *realoc(char *str, int strle)
-{
-	int x = 0;
-	char *s;
-
-	s = malloc(sizeof(char) * (strle + READ_SIZE + 1));
-	for (x; str[x]; x = x + 1)
-		s[x] = str[x];
-	s[x] = '\0';
-	free(str);
-	return (s);
-}*/
-
 char *check(char *str,int fd)
 {
 	int i = 0;
 	int strle = 0;
 	char *inter = malloc(sizeof(char) * (READ_SIZE + 1));
-	//char *dest;
 
 	for (strle; str[strle]; strle = strle + 1);
 	for (i; str[i]; i = i + 1)
@@ -66,13 +52,9 @@ char *check(char *str,int fd)
 		return (str);
 	i = read(fd, inter, READ_SIZE);
 	inter[i] = '\0';
-	//str = realoc(str, strle);
 	str = my_strconcat(str, inter);
 	if (i == 0 || fd < 0 || READ_SIZE == 0)
 		return (NULL);
-	/*dest = malloc(sizeof(char) * (strle + READ_SIZE + 1));
-	dest = my_strconcat(str, inter);
-	dest = check(dest, fd);*/
 	str = check(str, fd);
 	return (str);
 }
